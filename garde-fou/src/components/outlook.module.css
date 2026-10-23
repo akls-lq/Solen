@@ -1,0 +1,587 @@
+/* Reprend la mise en page d'Outlook sur le web (nouvel Outlook) : barre bleue, rail d'applications,
+   ruban simplifié, dossiers, liste, volet de lecture, puis le volet du module à droite. */
+
+.root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  color: #242424;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.topBar {
+  height: 48px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f6cbd;
+  color: #fff;
+  padding: 0 12px 0 0;
+}
+.waffle {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+.productName {
+  font-size: 16px;
+  font-weight: 600;
+  width: 210px;
+}
+.search {
+  flex: 0 1 468px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 4px;
+  background: #ebf3fc;
+  color: #616161;
+}
+.topIcons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.shell {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+.appRail {
+  width: 48px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding-top: 14px;
+  color: #616161;
+  background: #f0f0f0;
+}
+.railActive {
+  color: #0f6cbd;
+  position: relative;
+}
+.railActive::before {
+  content: "";
+  position: absolute;
+  left: -13px;
+  top: 2px;
+  bottom: 2px;
+  width: 3px;
+  border-radius: 2px;
+  background: #0f6cbd;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px 8px;
+}
+.ribbonTabs {
+  display: flex;
+  gap: 20px;
+  padding: 8px 8px 6px;
+  color: #424242;
+}
+.ribbonTabActive {
+  font-weight: 600;
+  color: #242424;
+  border-bottom: 2px solid #0f6cbd;
+  padding-bottom: 2px;
+}
+.ribbon {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px 8px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+}
+.ribbonSep {
+  width: 1px;
+  height: 20px;
+  background: #e0e0e0;
+  margin: 0 6px;
+}
+.brandIcon {
+  color: #0b5b3f;
+}
+
+.panes {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 8px;
+  padding-top: 8px;
+}
+.folderPane {
+  width: 220px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+.folderPane a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 24px;
+  border-radius: 4px;
+  color: #242424;
+  cursor: default;
+}
+.folderPane a b {
+  margin-left: auto;
+  color: #0f6cbd;
+}
+.folderAccount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  padding: 8px 6px;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.folderPane a.folderActive {
+  background: #ebebeb;
+  font-weight: 600;
+}
+
+.messageList {
+  width: 340px;
+  flex: none;
+  background: #fff;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+}
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 6px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.listTabs {
+  display: flex;
+  gap: 16px;
+  color: #616161;
+}
+.listTabActive {
+  color: #242424;
+  font-weight: 600;
+  border-bottom: 2px solid #0f6cbd;
+  padding-bottom: 4px;
+}
+.groupLabel {
+  padding: 10px 14px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #424242;
+}
+.listItem {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px 10px 14px;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+.listItem:hover {
+  background: #f5f5f5;
+}
+.listItem:focus-visible {
+  outline: 2px solid #0f6cbd;
+  outline-offset: -2px;
+}
+.listItemSelected,
+.listItemSelected:hover {
+  background: #ebf3fc;
+}
+.listItemUnread {
+  border-left-color: #0f6cbd;
+}
+.itemBody {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.itemTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.itemFrom {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.itemDate {
+  font-size: 12px;
+  color: #616161;
+  flex: none;
+}
+.itemSubject {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.itemPreview {
+  font-size: 12px;
+  color: #616161;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.listItemUnread .itemFrom {
+  font-weight: 600;
+}
+.listItemUnread .itemSubject {
+  font-weight: 600;
+  color: #0f6cbd;
+}
+
+.readingPane {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 4px 4px 16px;
+}
+.subject {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 8px 8px 12px;
+}
+.messageCard {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px 20px 24px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+}
+.messageHeader {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.messageMeta {
+  flex: 1;
+  min-width: 0;
+}
+.address {
+  color: #616161;
+}
+.messageActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2px;
+  max-width: 260px;
+}
+.muted {
+  color: #616161;
+  font-size: 12px;
+}
+
+/* Barre de notification des modules Outlook (Office.MailboxEnums.ItemNotificationMessageType). */
+.infobar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 6px 8px 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.infobarError {
+  background: #fdf3f4;
+  border: 1px solid #eeacb2;
+}
+.infobarError > svg {
+  color: #c50f1f;
+  flex: none;
+}
+.infobarInfo {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+}
+.infobarInfo > svg {
+  color: #616161;
+  flex: none;
+}
+.infobarText {
+  flex: 1;
+}
+
+.attachments {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: inherit;
+  text-decoration: none;
+}
+.attachment > span {
+  display: flex;
+  flex-direction: column;
+}
+.attachmentName {
+  font-size: 13px;
+}
+.pdfIcon {
+  color: #c50f1f;
+}
+.messageBody {
+  margin-top: 20px;
+  white-space: pre-line;
+  line-height: 1.55;
+  font-size: 15px;
+  max-width: 72ch;
+}
+
+/* Volet du module : largeur d'un volet Office (environ 320 px). */
+.addinPane {
+  width: 330px;
+  flex: none;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+}
+.addinHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px 8px 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.addinTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.addinBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+.stepPending {
+  color: #707070;
+}
+.stepDone {
+  color: #242424;
+}
+.stepCheck {
+  color: #107c10;
+}
+.stepDot {
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  border-radius: 50%;
+  background: #d1d1d1;
+}
+.paneError {
+  color: #c50f1f;
+}
+
+.verdictWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.verdictCard {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 6px;
+}
+.verdictCard > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.verdictCard strong {
+  font-size: 16px;
+}
+.verdictFraude {
+  background: #fdf3f4;
+  color: #b10e1c;
+}
+.verdictSuspect {
+  background: #fff9f5;
+  color: #bc4b09;
+}
+.verdictFiable {
+  background: #f1faf1;
+  color: #0e700e;
+}
+.amount {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.paneSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.paneSection h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #424242;
+}
+.paneSection h4 {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+.paneSection p {
+  margin: 0;
+}
+.senderLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.badgeVerified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #ebf3fc;
+  color: #115ea3;
+  font-weight: 600;
+  font-size: 12px;
+}
+.badgeUnverified {
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #f0f0f0;
+  color: #424242;
+  font-weight: 600;
+  font-size: 12px;
+}
+.reasons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.reasons li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.reasons svg {
+  flex: none;
+  margin-top: 2px;
+}
+.okIcon {
+  color: #107c10;
+}
+.badIcon {
+  color: #c50f1f;
+}
+.warnIcon {
+  color: #bc4b09;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag {
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  font-size: 12px;
+}
+.phone {
+  white-space: nowrap;
+}
+.questions {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.paneActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.paneFooter {
+  font-size: 11px;
+  color: #707070;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

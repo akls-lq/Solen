@@ -1,0 +1,72 @@
+// Données 100 % fictives. En V2, les profils viendraient de la banque et du logiciel comptable, jamais d'un mail.
+
+export type Supplier = {
+  id: string;
+  name: string;
+  domain: string;
+  iban: string;
+  phone: string;
+  country: string;
+  usualAmount: { min: number; max: number };
+  paymentsToIban: number;
+  since: string;
+};
+
+export type Person = { name: string; role: string; email: string; phone: string; aliases: string[] };
+
+export const COMPANY = { name: "Durand Industries", domain: "durand-industries.fr" };
+
+export const MAILBOX_OWNER = { name: "Claire Bernard", email: "c.bernard@durand-industries.fr" };
+
+export const DIRECTORY: Person[] = [
+  {
+    name: "Jean-Pierre Durand",
+    role: "PDG",
+    email: "jp.durand@durand-industries.fr",
+    phone: "01 84 25 10 01",
+    aliases: ["jean-pierre durand", "j.-p. durand", "jp durand", "j.p. durand"],
+  },
+  {
+    name: "Marc Lefèvre",
+    role: "DAF",
+    email: "m.lefevre@durand-industries.fr",
+    phone: "01 84 25 10 12",
+    aliases: ["marc lefèvre", "marc lefevre", "m. lefèvre"],
+  },
+];
+
+export const SUPPLIERS: Supplier[] = [
+  {
+    id: "dubois",
+    name: "Imprimerie Dubois",
+    domain: "imprimerie-dubois.fr",
+    iban: "FR3730004008210001234510933",
+    phone: "01 84 60 12 45",
+    country: "France",
+    usualAmount: { min: 1800, max: 2600 },
+    paymentsToIban: 14,
+    since: "2021",
+  },
+  {
+    id: "martin",
+    name: "Transports Martin",
+    domain: "transports-martin.fr",
+    iban: "FR0310278060410002098765530",
+    phone: "04 72 18 52 30",
+    country: "France",
+    usualAmount: { min: 15000, max: 20000 },
+    paymentsToIban: 22,
+    since: "2019",
+  },
+  {
+    id: "muller",
+    name: "Müller Technik GmbH",
+    domain: "mueller-technik.de",
+    iban: "DE47370400440532013077",
+    phone: "+49 221 555 0142",
+    country: "Allemagne",
+    usualAmount: { min: 8000, max: 11000 },
+    paymentsToIban: 9,
+    since: "2022",
+  },
+];
