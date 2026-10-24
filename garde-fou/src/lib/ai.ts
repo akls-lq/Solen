@@ -12,7 +12,7 @@ export type AiAnalysis = {
   questionsContreAppel: string[];
 };
 
-const SYSTEM_PROMPT = `Tu es Solen, un assistant anti-fraude pour le service comptable d'une PME française.
+const SYSTEM_PROMPT = `Tu es Solen, un assistant anti-fraude pour le service comptable d'une entreprise française.
 On te donne un mail reçu (et le texte de ses pièces jointes), dont les IBAN sont remplacés par des jetons [IBAN_n],
 ainsi que les résultats de contrôles techniques déjà faits par le code. Ces contrôles sont fiables : ne les contredis pas.
 

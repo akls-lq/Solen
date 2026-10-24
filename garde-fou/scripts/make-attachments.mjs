@@ -44,9 +44,9 @@ await make("Nouveau_RIB_Nuvio_Cloud.pdf", ({ t, hr, page, bold }) => {
 await make("Rechnung_2026-0388.pdf", ({ t, hr, bold }) => {
   t("MÜLLER TECHNIK GmbH", 50, 780, 16, bold, rgb(0.1, 0.1, 0.1));
   t("Industriestraße 41 · 50829 Köln · Deutschland · USt-IdNr. DE298765431", 50, 762, 9, undefined, grey);
-  t("Durand Industries", 50, 720, 10);
+  t("Arkos Systems", 50, 720, 10);
   t("Service comptabilité · Frau Claire Bernard", 50, 706, 10);
-  t("Zone industrielle Nord · 77100 Meaux · Frankreich", 50, 692, 10);
+  t("18 rue de la Pépinière · 75008 Paris · Frankreich", 50, 692, 10);
   t("RECHNUNG", 50, 650, 14, bold);
   t("Rechnungsnummer: 2026-0388", 360, 720, 10);
   t("Rechnungsdatum: 21.10.2026", 360, 706, 10);
@@ -54,8 +54,8 @@ await make("Rechnung_2026-0388.pdf", ({ t, hr, bold }) => {
   hr(630);
   t("Pos.", 50, 615, 9, bold); t("Beschreibung", 90, 615, 9, bold); t("Menge", 350, 615, 9, bold); t("Betrag", 470, 615, 9, bold);
   hr(605);
-  t("1", 50, 588, 10); t("Hydraulikpumpe HP-450", 90, 588, 10); t("6", 350, 588, 10); t("7.920,00 EUR", 470, 588, 10);
-  t("2", 50, 570, 10); t("Dichtungssatz DS-12", 90, 570, 10); t("30", 350, 570, 10); t("1.230,00 EUR", 470, 570, 10);
+  t("1", 50, 588, 10); t("Server-Rack R-450", 90, 588, 10); t("6", 350, 588, 10); t("7.920,00 EUR", 470, 588, 10);
+  t("2", 50, 570, 10); t("Netzwerk-Switch NS-12", 90, 570, 10); t("30", 350, 570, 10); t("1.230,00 EUR", 470, 570, 10);
   t("3", 50, 552, 10); t("Versand (Spedition)", 90, 552, 10); t("1", 350, 552, 10); t("720,00 EUR", 470, 552, 10);
   hr(535);
   t("Gesamtbetrag:", 350, 515, 11, bold); t("9.870,00 EUR", 470, 515, 11, bold);

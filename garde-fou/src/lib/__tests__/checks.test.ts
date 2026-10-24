@@ -51,8 +51,8 @@ describe("Règles", () => {
   it("mail urgent du vrai DAF pour un fournisseur connu au montant habituel : aucune alerte", () => {
     const r = runRules({
       fromName: "Marc Lefèvre",
-      fromEmail: "m.lefevre@durand-industries.fr",
-      headers: pass("durand-industries.fr"),
+      fromEmail: "m.lefevre@arkos-systems.fr",
+      headers: pass("arkos-systems.fr"),
       text: "Urgent : peux-tu régler aujourd'hui la facture F-2026-219 de Lumio Data (2 350,00 €) ?",
     });
     expect(r.verdict).toBe("fiable");

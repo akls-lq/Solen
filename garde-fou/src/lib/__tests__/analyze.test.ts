@@ -83,7 +83,7 @@ describe("Verdict final", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const daf = MAILS.find((m) => m.id === "daf")!;
     const result = await analyzeMail({
-      internetMessageId: "<inconnu-sans-secours@durand-industries.fr>",
+      internetMessageId: "<inconnu-sans-secours@arkos-systems.fr>",
       subject: daf.subject,
       fromName: daf.from.displayName,
       fromEmail: daf.from.emailAddress,

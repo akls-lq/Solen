@@ -19,7 +19,7 @@ export const FALLBACK_ANALYSES: Record<string, AiAnalysis> = {
       "Qui, chez vous, a signé ce nouveau RIB ?",
     ],
   },
-  "<20261023101503.11ab@durand-industries.fr>": {
+  "<20261023101503.11ab@arkos-systems.fr>": {
     demande: "Régler aujourd'hui la facture F-2026-219 de Lumio Data (2 350 €).",
     langue: "français",
     techniques: ["urgence"],

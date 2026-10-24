@@ -4,7 +4,7 @@ import type { TestMail } from "./client";
 import { corruptedPdf, imageOnlyPdf, textPdf } from "./pdfs";
 
 const auth = (domain: string, result = "pass") =>
-  `Authentication-Results: mx.durand-industries.fr; spf=${result} smtp.mailfrom=${domain}; dkim=${result} header.d=${domain}; dmarc=${result} header.from=${domain}`;
+  `Authentication-Results: mx.arkos-systems.fr; spf=${result} smtp.mailfrom=${domain}; dkim=${result} header.d=${domain}; dmarc=${result} header.from=${domain}`;
 
 const FRAUD_IBAN = "FR78 1695 8000 0100 4712 8148 213";
 const NUVIO_IBAN = "FR03 1027 8060 4100 0209 8765 530";
@@ -188,9 +188,9 @@ export const CASES: AttackCase[] = [
     mail: async () =>
       nuvio({
         headers: [
-          "Authentication-Results: mx.durand-industries.fr; spf=pass smtp.mailfrom=nuvio-cloud.fr; dkim=pass header.d=nuvio-cloud.fr; dmarc=pass header.from=nuvio-cloud.fr",
+          "Authentication-Results: mx.arkos-systems.fr; spf=pass smtp.mailfrom=nuvio-cloud.fr; dkim=pass header.d=nuvio-cloud.fr; dmarc=pass header.from=nuvio-cloud.fr",
           "Received: from mail.attaquant.example",
-          "Authentication-Results: mx.durand-industries.fr; spf=fail smtp.mailfrom=attaquant.example; dkim=none; dmarc=fail header.from=nuvio-cloud.fr",
+          "Authentication-Results: mx.arkos-systems.fr; spf=fail smtp.mailfrom=attaquant.example; dkim=none; dmarc=fail header.from=nuvio-cloud.fr",
         ].join("\n"),
         body: "Bonjour,\n\nMerci de nous confirmer la date de règlement de la facture n°2026-114.\n\nService facturation, Nuvio Cloud",
       }),
@@ -288,7 +288,7 @@ export const CASES: AttackCase[] = [
       fromName: "Service Sécurité – Banque Horizon",
       fromEmail: "securite@banquehorizon-alerte.com",
       headers: auth("banquehorizon-alerte.com"),
-      body: "Madame,\n\nUne opération suspecte de 12 450,00 € a été détectée sur le compte professionnel de Durand Industries. Pour la bloquer, effectuez immédiatement un virement de sécurité du même montant vers votre compte de protection temporaire : FR24 1450 8000 0100 9876 5432 110.\n\nVotre conseiller vous rappellera dans la journée. Ne contactez pas votre agence, la procédure est automatisée.\n\nService Sécurité",
+      body: "Madame,\n\nUne opération suspecte de 12 450,00 € a été détectée sur le compte professionnel de Arkos Systems. Pour la bloquer, effectuez immédiatement un virement de sécurité du même montant vers votre compte de protection temporaire : FR24 1450 8000 0100 9876 5432 110.\n\nVotre conseiller vous rappellera dans la journée. Ne contactez pas votre agence, la procédure est automatisée.\n\nService Sécurité",
       attachments: [],
     }),
   },

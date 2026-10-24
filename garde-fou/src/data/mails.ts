@@ -19,7 +19,7 @@ export type Mail = {
 
 const authHeaders = (domain: string, result = "pass") =>
   [
-    `Authentication-Results: mx.durand-industries.fr; spf=${result} smtp.mailfrom=${domain};`,
+    `Authentication-Results: mx.arkos-systems.fr; spf=${result} smtp.mailfrom=${domain};`,
     ` dkim=${result} header.d=${domain}; dmarc=${result} action=none header.from=${domain}`,
   ].join("\n");
 
@@ -52,9 +52,9 @@ export const MAILS: Mail[] = [
   },
   {
     id: "daf",
-    internetMessageId: "<20261023101503.11ab@durand-industries.fr>",
+    internetMessageId: "<20261023101503.11ab@arkos-systems.fr>",
     subject: "Urgent : facture Lumio Data à régler aujourd'hui",
-    from: { displayName: "Marc Lefèvre", emailAddress: "m.lefevre@durand-industries.fr" },
+    from: { displayName: "Marc Lefèvre", emailAddress: "m.lefevre@arkos-systems.fr" },
     to: "Claire Bernard",
     received: { dayOffset: 0, time: "10:15" },
     unread: true,
@@ -62,10 +62,10 @@ export const MAILS: Mail[] = [
       "Claire,",
       "Peux-tu régler aujourd'hui la facture F-2026-219 de Lumio Data (2 350,00 €) ? Elle est échue depuis le 15 et ils nous ont relancés deux fois. Je ne veux pas de pénalités de retard.",
       "Merci,",
-      "Marc Lefèvre\nDirecteur administratif et financier\nDurand Industries",
+      "Marc Lefèvre\nDirecteur administratif et financier\nArkos Systems",
     ].join("\n\n"),
     attachments: [],
-    internetHeaders: authHeaders("durand-industries.fr"),
+    internetHeaders: authHeaders("arkos-systems.fr"),
   },
   {
     // Fausse facture de conseil depuis un domaine sosie : « de1ivery » avec un 1 à la place du l.
@@ -153,7 +153,7 @@ export const MAILS: Mail[] = [
     received: { dayOffset: -1, time: "17:45" },
     body: [
       "Madame,",
-      "Une opération suspecte de 12 450,00 € a été détectée sur le compte professionnel de Durand Industries. Pour la bloquer, effectuez immédiatement un virement de sécurité du même montant vers votre compte de protection temporaire :\nIBAN : FR24 1450 8000 0100 9876 5432 110",
+      "Une opération suspecte de 12 450,00 € a été détectée sur le compte professionnel de Arkos Systems. Pour la bloquer, effectuez immédiatement un virement de sécurité du même montant vers votre compte de protection temporaire :\nIBAN : FR24 1450 8000 0100 9876 5432 110",
       "Votre conseiller vous rappellera dans la journée. Ne contactez pas votre agence : la procédure est automatisée.",
       "Service Sécurité\nBanque Horizon",
     ].join("\n\n"),
@@ -163,19 +163,19 @@ export const MAILS: Mail[] = [
   {
     // Hameçonnage : faux support informatique qui vole les identifiants, depuis un domaine qui imite celui de l'entreprise.
     id: "mfa",
-    internetMessageId: "<20261022113020.77fe@durand-industries-it.fr>",
+    internetMessageId: "<20261022113020.77fe@arkos-systems-it.fr>",
     subject: "Action requise : votre double authentification expire aujourd'hui",
-    from: { displayName: "Support informatique", emailAddress: "support@durand-industries-it.fr" },
+    from: { displayName: "Support informatique", emailAddress: "support@arkos-systems-it.fr" },
     to: "Claire Bernard",
     received: { dayOffset: -1, time: "11:30" },
     body: [
       "Bonjour Claire,",
-      "Dans le cadre de la mise à jour de sécurité, votre double authentification expire aujourd'hui. Pour conserver votre accès à la messagerie et au VPN, renouvelez-la avant 18 h :\nhttps://durand-industries-it.fr/securite/renouvellement",
+      "Dans le cadre de la mise à jour de sécurité, votre double authentification expire aujourd'hui. Pour conserver votre accès à la messagerie et au VPN, renouvelez-la avant 18 h :\nhttps://arkos-systems-it.fr/securite/renouvellement",
       "Sans action de votre part, votre compte sera suspendu.",
       "Le support informatique",
     ].join("\n\n"),
     attachments: [],
-    internetHeaders: authHeaders("durand-industries-it.fr"),
+    internetHeaders: authHeaders("arkos-systems-it.fr"),
   },
   {
     id: "news",

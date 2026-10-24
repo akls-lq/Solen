@@ -14,22 +14,22 @@ export type Supplier = {
 
 export type Person = { name: string; role: string; email: string; phone: string; aliases: string[] };
 
-export const COMPANY = { name: "Durand Industries", domain: "durand-industries.fr" };
+export const COMPANY = { name: "Arkos Systems", domain: "arkos-systems.fr" };
 
-export const MAILBOX_OWNER = { name: "Claire Bernard", email: "c.bernard@durand-industries.fr" };
+export const MAILBOX_OWNER = { name: "Claire Bernard", email: "c.bernard@arkos-systems.fr" };
 
 export const DIRECTORY: Person[] = [
   {
     name: "Jean-Pierre Durand",
     role: "PDG",
-    email: "jp.durand@durand-industries.fr",
+    email: "jp.durand@arkos-systems.fr",
     phone: "01 84 25 10 01",
     aliases: ["jean-pierre durand", "j.-p. durand", "jp durand", "j.p. durand"],
   },
   {
     name: "Marc Lefèvre",
     role: "DAF",
-    email: "m.lefevre@durand-industries.fr",
+    email: "m.lefevre@arkos-systems.fr",
     phone: "01 84 25 10 12",
     aliases: ["marc lefèvre", "marc lefevre", "m. lefèvre"],
   },
@@ -39,7 +39,7 @@ export const DIRECTORY: Person[] = [
 export const IT_SUPPORT: Person = {
   name: "Support informatique",
   role: "DSI",
-  email: "support@durand-industries.fr",
+  email: "support@arkos-systems.fr",
   phone: "01 84 25 10 30",
   aliases: [],
 };
