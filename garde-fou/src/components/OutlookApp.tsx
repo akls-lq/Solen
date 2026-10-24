@@ -93,7 +93,8 @@ export const OutlookApp = () => {
       return true;
     }
   });
-  const [paneOpen, setPaneOpen] = useState(true);
+  // Désépinglé au chargement : aucune analyse (ni appel à Mistral) tant qu'on n'appuie pas sur P ou sur le bouton Solen.
+  const [paneOpen, setPaneOpen] = useState(false);
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [results, setResults] = useState<Record<string, AnalysisResult>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
