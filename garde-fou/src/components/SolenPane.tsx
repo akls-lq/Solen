@@ -133,7 +133,7 @@ const VigilanceCard = ({ vigilance }: { vigilance: VigilanceState }) => {
         </span>
       </button>
       <div className={styles.progress}>
-        <span style={{ width: `${vigilance.points % POINTS_PER_LEVEL}%` }} />
+        <span style={{ transform: `scaleX(${(vigilance.points % POINTS_PER_LEVEL) / POINTS_PER_LEVEL})` }} />
       </div>
       <p className={styles.muted}>
         {stopped === 0
