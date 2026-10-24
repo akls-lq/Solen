@@ -17,21 +17,33 @@ export const isValidIban = (raw: string) => {
 
 type IbanMatch = { start: number; end: number; iban: string };
 
+// Séparateurs qu'un fraudeur peut glisser entre les groupes pour échapper à la détection :
+// espaces (y compris insécables et retours à la ligne), tirets, points et caractères invisibles.
+const SEPARATOR = /[\s\-.\u200b-\u200d\u2060\ufeff]/;
+const INVISIBLE = /[\u200b-\u200d\u2060\ufeff]/;
+const MAX_CONSECUTIVE_SEPARATORS = 2;
+
 // Une regex seule avalerait le mot suivant (« … 0933 BIC ») : on lit jusqu'à 34 caractères
 // puis on garde le plus long préfixe dont le modulo 97 est valide.
 const scanIbans = (text: string): IbanMatch[] => {
   const matches: IbanMatch[] = [];
-  const starts = /(?<![A-Za-z0-9])[A-Za-z]{2}\d{2}/g;
+  const starts = /(?<![A-Za-z0-9])[A-Za-z]{2}[\u200b-\u200d\u2060\ufeff]*\d/g;
   let found: RegExpExecArray | null;
   while ((found = starts.exec(text))) {
     const chars: string[] = [];
     const ends: number[] = [];
+    let separators = 0;
     for (let j = found.index; j < text.length && chars.length < 34; j++) {
       const ch = text[j];
       if (/[A-Za-z0-9]/.test(ch)) {
         chars.push(ch.toUpperCase());
         ends.push(j + 1);
-      } else if (ch !== " " || text[j - 1] === " ") break;
+        separators = 0;
+      } else if (INVISIBLE.test(ch)) {
+        continue;
+      } else if (SEPARATOR.test(ch) && ++separators <= MAX_CONSECUTIVE_SEPARATORS) {
+        continue;
+      } else break;
     }
     for (let len = chars.length; len >= 15; len--) {
       const iban = chars.slice(0, len).join("");
@@ -62,4 +74,26 @@ export const redactIbans = (text: string, tokens: Map<string, string>) => {
     cursor = end;
   }
   return out + text.slice(cursor);
+};
+
+// Un RIB français sans IBAN (code banque, guichet, compte, clé) donne le même compte : on reconstitue l'IBAN.
+const RIB_PATTERN =
+  /code\s*banque\D{0,15}(\d{5})[\s\S]{0,80}?guichet\D{0,15}(\d{5})[\s\S]{0,80}?compte\D{0,15}([0-9A-Z]{11})[\s\S]{0,40}?cl[ée](?:\s*rib)?\D{0,15}(\d{2})/gi;
+
+export const ibanFromFrenchRib = (bank: string, branch: string, account: string, key: string) => {
+  const bban = `${bank}${branch}${account.toUpperCase()}${key}`;
+  for (let check = 2; check <= 98; check++) {
+    const candidate = `FR${String(check).padStart(2, "0")}${bban}`;
+    if (isValidIban(candidate)) return candidate;
+  }
+  return null;
+};
+
+export const findRibIbans = (text: string) => {
+  const found: string[] = [];
+  for (const m of text.matchAll(RIB_PATTERN)) {
+    const iban = ibanFromFrenchRib(m[1], m[2], m[3], m[4]);
+    if (iban) found.push(iban);
+  }
+  return found;
 };

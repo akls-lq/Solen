@@ -20,6 +20,7 @@ import type { Mail } from "@/data/mails";
 import type { AnalysisResult } from "@/lib/analyze";
 import type { Verdict } from "@/lib/checks";
 import styles from "./outlook.module.css";
+import { BADGES, level, POINTS_PER_LEVEL, type Reflex, type VigilanceState } from "./vigilance";
 
 const STEP_DELAY_MS = 450;
 
@@ -43,13 +44,17 @@ type Props = {
   result?: AnalysisResult;
   error?: string;
   onClose: () => void;
+  vigilance: VigilanceState;
+  onReflex: (reflex: Reflex) => void;
+  // Un module ne peut rien dessiner hors de son volet : la notification de badge s'affiche ici.
+  notice?: string;
 };
 
-export const GardeFouPane = ({ mail, result, error, onClose }: Props) => {
+export const SolenPane = ({ mail, result, error, onClose, vigilance, onReflex, notice }: Props) => {
   const steps = stepsFor(mail);
   const stepCount = steps.length;
   const [shownSteps, setShownSteps] = useState(0);
-  const [dafNotified, setDafNotified] = useState(false);
+  const isDone = (reflex: Reflex) => vigilance.done.includes(`${mail.id}:${reflex}`);
 
   // Rejoue les étapes à chaque mail (le parent remonte ce composant par mail) : la vraie analyse tourne pendant ce temps.
   useEffect(() => {
@@ -62,10 +67,10 @@ export const GardeFouPane = ({ mail, result, error, onClose }: Props) => {
   const checked = result ? shownSteps : Math.min(shownSteps, steps.length - 1);
 
   return (
-    <aside className={styles.addinPane} aria-label="Garde-Fou">
+    <aside className={styles.addinPane} aria-label="Solen">
       <header className={styles.addinHeader}>
         <span className={styles.addinTitle}>
-          <Shield20Filled className={styles.brandIcon} /> Garde-Fou
+          <Shield20Filled className={styles.brandIcon} /> Solen
         </span>
         <span>
           <Tooltip content="Épinglé" relationship="label">
@@ -78,6 +83,16 @@ export const GardeFouPane = ({ mail, result, error, onClose }: Props) => {
       </header>
 
       <div className={styles.addinBody}>
+        {notice && (
+          <div className={styles.notice} role="status">
+            <ShieldCheckmark16Filled />
+            <span>
+              <strong>Réflexe acquis</strong> {notice}
+            </span>
+          </div>
+        )}
+        <VigilanceCard vigilance={vigilance} />
+
         {!done && !error && (
           <ol className={styles.steps}>
             {steps.map((label, i) => (
@@ -97,20 +112,62 @@ export const GardeFouPane = ({ mail, result, error, onClose }: Props) => {
 
         {error && <p className={styles.paneError}>Analyse indisponible pour le moment. Réessayez dans un instant.</p>}
 
-        {done && result && <Verdict result={result} dafNotified={dafNotified} onNotifyDaf={() => setDafNotified(true)} />}
+        {done && result && <Verdict result={result} isDone={isDone} onReflex={onReflex} />}
       </div>
     </aside>
   );
 };
 
+const VigilanceCard = ({ vigilance }: { vigilance: VigilanceState }) => {
+  const [open, setOpen] = useState(false);
+  const stopped = Object.keys(vigilance.protectedAmounts).length;
+  const saved = Object.values(vigilance.protectedAmounts).reduce((a, b) => a + b, 0);
+  return (
+    <section className={styles.vigilance}>
+      <button type="button" className={styles.vigilanceHead} onClick={() => setOpen((v) => !v)} aria-expanded={open}>
+        <span>
+          <strong>Vigilance</strong> · niveau {level(vigilance.points)} · {vigilance.points} pts
+        </span>
+        <span className={styles.muted}>
+          Réflexes {vigilance.badges.length}/{BADGES.length}
+        </span>
+      </button>
+      <div className={styles.progress}>
+        <span style={{ width: `${vigilance.points % POINTS_PER_LEVEL}%` }} />
+      </div>
+      <p className={styles.muted}>
+        {stopped === 0
+          ? "Chaque bon réflexe face à une fraude vous rapporte des points."
+          : `${stopped} fraude${stopped > 1 ? "s" : ""} déjouée${stopped > 1 ? "s" : ""} · ${euros(saved)} protégés`}
+      </p>
+      {open && (
+        <ul className={styles.badges}>
+          {BADGES.map((b) => {
+            const unlocked = vigilance.badges.includes(b.id);
+            return (
+              <li key={b.id} className={unlocked ? styles.badgeOn : styles.badgeOff}>
+                {unlocked ? <Checkmark16Filled /> : <span className={styles.stepDot} />}
+                <span>
+                  {b.label}
+                  {!unlocked && <span className={styles.badgeHint}>{b.hint}</span>}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </section>
+  );
+};
+
 const Verdict = ({
   result,
-  dafNotified,
-  onNotifyDaf,
+  isDone,
+  onReflex,
 }: {
   result: AnalysisResult;
-  dafNotified: boolean;
-  onNotifyDaf: () => void;
+  isDone: (reflex: Reflex) => boolean;
+  onReflex: (reflex: Reflex) => void;
 }) => {
   const ui = VERDICT_UI[result.verdict];
   const alert = result.verdict !== "fiable";
@@ -136,6 +193,17 @@ const Verdict = ({
           )}
           {result.sender.label}
         </p>
+        {result.sender.lookalike && (
+          <div className={styles.lookalike}>
+            <span className={styles.lookalikeAddress}>
+              {result.sender.lookalike.local}@
+              {result.sender.lookalike.segments.map((s, i) => (s.odd ? <mark key={i}>{s.text}</mark> : <span key={i}>{s.text}</span>))}
+            </span>
+            <span className={styles.muted}>
+              imite <span className={styles.lookalikeAddress}>{result.sender.lookalike.imitates}</span>
+            </span>
+          </div>
+        )}
       </section>
 
       {result.demande && (
@@ -143,7 +211,7 @@ const Verdict = ({
           <h3>La demande</h3>
           <p>{result.demande}</p>
           {result.langue && !/fran/i.test(result.langue) && (
-            <p className={styles.muted}>Mail rédigé en {result.langue}, analysé en français.</p>
+            <p className={styles.muted}>Mail en {result.langue}, analysé en français.</p>
           )}
         </section>
       )}
@@ -161,7 +229,9 @@ const Verdict = ({
                 ) : (
                   <Info16Regular className={styles.warnIcon} />
                 )}
-                <span>{r.text}</span>
+                <span>
+                  {r.text} <span className={styles.provenance}>{r.source === "code" ? "Règle" : "IA"}</span>
+                </span>
               </li>
             ))}
           </ul>
@@ -185,34 +255,44 @@ const Verdict = ({
         <section className={styles.paneSection}>
           <h3>Que faire</h3>
           <p>
-            Ne payez pas. Appelez <strong>{result.callback.who}</strong> au{" "}
-            <strong className={styles.phone}>{result.callback.phone}</strong>.
+            {result.amount !== undefined ? "Ne payez pas." : "Ne cliquez pas."} Appelez <strong>{result.callback.who}</strong> au{" "}
+            <strong className={styles.phone}>{result.callback.phone}</strong> (numéro connu, pas celui du mail).
           </p>
-          <p className={styles.muted}>Numéro déjà connu de l’entreprise, jamais celui écrit dans le mail.</p>
           {result.callback.questions.length > 0 && (
-            <>
-              <h4>Questions à poser</h4>
+            <details className={styles.questionsBox}>
+              <summary>Questions à poser ({result.callback.questions.length})</summary>
               <ol className={styles.questions}>
                 {result.callback.questions.map((q) => (
                   <li key={q}>{q}</li>
                 ))}
               </ol>
-            </>
+            </details>
           )}
           <div className={styles.paneActions}>
-            <Button appearance="primary" icon={<Call20Regular />} as="a" href={`tel:${result.callback.phone.replace(/\s/g, "")}`}>
-              Appeler
+            <Button appearance="primary" icon={<Call20Regular />} onClick={() => onReflex("contre-appel")} disabled={isDone("contre-appel")}>
+              {isDone("contre-appel") ? "Contre-appel noté" : "Appeler"}
             </Button>
-            <Button icon={<PersonAlert20Regular />} onClick={onNotifyDaf} disabled={dafNotified}>
-              {dafNotified ? "DAF prévenu" : "Prévenir le DAF"}
+            <Button icon={<PersonAlert20Regular />} onClick={() => onReflex("daf")} disabled={isDone("daf")}>
+              {isDone("daf") ? "DAF prévenu" : "Prévenir le DAF"}
             </Button>
           </div>
-          {dafNotified && <p className={styles.muted}>Marc Lefèvre a reçu un résumé de l&apos;alerte.</p>}
+          {isDone("daf") && <p className={styles.muted}>Résumé envoyé à Marc Lefèvre.</p>}
+        </section>
+      )}
+
+      {!alert && (
+        <section className={styles.paneSection}>
+          <Button size="small" onClick={() => onReflex("signalement")} disabled={isDone("signalement")}>
+            {isDone("signalement") ? "Signalement transmis" : "Ce mail me semble suspect"}
+          </Button>
+          {isDone("signalement") && (
+            <p className={styles.muted}>Merci : votre signalement sera vérifié et aidera Solen à progresser.</p>
+          )}
         </section>
       )}
 
       <footer className={styles.paneFooter}>
-        IBAN masqués avant l&apos;analyse par l&apos;IA. Seul le code compare les coordonnées bancaires.{" "}
+        L&apos;IA ne voit jamais les IBAN.{" "}
         <a href="/fournisseurs" target="_blank" rel="noreferrer">
           Profils fournisseurs
         </a>

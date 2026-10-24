@@ -36,9 +36,9 @@ describe("Montants", () => {
 describe("Règles", () => {
   it("fournisseur authentique, mais IBAN différent du profil : fraude, quoi que dise l'IA", () => {
     const r = runRules({
-      fromName: "Transports Martin",
-      fromEmail: "facturation@transports-martin.fr",
-      headers: pass("transports-martin.fr"),
+      fromName: "Nuvio Cloud",
+      fromEmail: "facturation@nuvio-cloud.fr",
+      headers: pass("nuvio-cloud.fr"),
       text: "Merci de régler la facture de 18 400,00 € sur notre nouveau compte FR78 1695 8000 0100 4712 8148 213",
     });
     expect(r.verified).toBe(true);
@@ -53,7 +53,7 @@ describe("Règles", () => {
       fromName: "Marc Lefèvre",
       fromEmail: "m.lefevre@durand-industries.fr",
       headers: pass("durand-industries.fr"),
-      text: "Urgent : peux-tu régler aujourd'hui la facture F-2026-219 d'Imprimerie Dubois (2 350,00 €) ?",
+      text: "Urgent : peux-tu régler aujourd'hui la facture F-2026-219 de Lumio Data (2 350,00 €) ?",
     });
     expect(r.verdict).toBe("fiable");
     expect(r.amountUsual).toBe(true);
@@ -73,9 +73,9 @@ describe("Règles", () => {
 
   it("domaine sosie d'un fournisseur : fraude", () => {
     const r = runRules({
-      fromName: "Transports Martin",
-      fromEmail: "facturation@transports-rnartin.fr",
-      headers: pass("transports-rnartin.fr"),
+      fromName: "Nuvio Cloud",
+      fromEmail: "facturation@nuvi0-cloud.fr",
+      headers: pass("nuvi0-cloud.fr"),
       text: "Merci de régler la facture.",
     });
     expect(r.sender.kind).toBe("lookalike");
@@ -84,8 +84,8 @@ describe("Règles", () => {
 
   it("SPF et DMARC en échec : jamais vérifié", () => {
     const r = runRules({
-      fromName: "Imprimerie Dubois",
-      fromEmail: "comptabilite@imprimerie-dubois.fr",
+      fromName: "Lumio Data",
+      fromEmail: "comptabilite@lumio-data.fr",
       headers: "Authentication-Results: mx; spf=fail; dkim=none; dmarc=fail",
       text: "Relance facture.",
     });

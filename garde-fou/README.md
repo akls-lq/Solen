@@ -1,6 +1,6 @@
-# Garde-Fou
+# Solen
 
-Démo : une boîte mail type Outlook où le module Garde-Fou signale les fraudes au virement (changement de RIB, faux président).
+Démo : une boîte mail type Outlook où le module Solen signale les fraudes au virement (changement de RIB, faux président).
 
 ## Lancer
 
@@ -10,8 +10,8 @@ npm run dev            # http://localhost:3000
 ```
 
 - Clé Mistral : créer `.env.local` avec `MISTRAL_API_KEY=...`. Sans clé, ou si Mistral ne répond pas, les analyses de secours de `src/data/fallback.ts` prennent le relais.
-- `GARDEFOU_AI=secours npm run dev` : n'appelle jamais Mistral (pour développer sans consommer de crédits).
-- `Alt+Maj+G` : installe ou retire Garde-Fou de la boîte mail (démo avant / après).
+- `SOLEN_AI=secours npm run dev` : n'appelle jamais Mistral (pour développer sans consommer de crédits).
+- `Alt+Maj+G` : installe ou retire Solen de la boîte mail (démo avant / après).
 - `/fournisseurs` : profils fournisseurs (IBAN masqués).
 - `npm test` : tests des contrôles (IBAN, expéditeur, montants, verdict).
 - `node scripts/make-attachments.mjs` : régénère les PDF de démo.

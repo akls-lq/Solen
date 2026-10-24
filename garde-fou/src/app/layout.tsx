@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Courrier - Claire Bernard - Outlook",
-  description: "Démo Garde-Fou : détection des fraudes au virement dans la boîte mail",
+  description: "Démo Solen : détection des fraudes au virement dans la boîte mail",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

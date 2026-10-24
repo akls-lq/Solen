@@ -17,7 +17,7 @@ export type SupplierRow = {
 };
 
 export const SupplierPortal = ({ companyName, rows }: { companyName: string; rows: SupplierRow[] }) => {
-  // Démo : la synchronisation avec la banque et le logiciel comptable est simulée (V2).
+  // Démo : la synchronisation avec le logiciel comptable est simulée (V2).
   const [syncedAt, setSyncedAt] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
 
@@ -33,7 +33,7 @@ export const SupplierPortal = ({ companyName, rows }: { companyName: string; row
     <FluentProvider theme={webLightTheme} className={styles.root}>
       <header className={styles.header}>
         <span className={styles.brand}>
-          <Shield20Filled /> Garde-Fou
+          <Shield20Filled /> Solen
         </span>
         <span className={styles.company}>{companyName} · Espace entreprise</span>
       </header>
@@ -42,13 +42,13 @@ export const SupplierPortal = ({ companyName, rows }: { companyName: string; row
           <div>
             <h1>Profils fournisseurs</h1>
             <p>
-              Appris à partir de vos relevés bancaires et de votre logiciel comptable. Un mail ne peut jamais modifier un
+              Appris à partir des paiements déjà enregistrés dans votre logiciel comptable. Un mail ne peut jamais modifier un
               profil.
             </p>
           </div>
           <div className={styles.sync}>
             <Button icon={<ArrowSync20Regular />} onClick={sync} disabled={syncing}>
-              {syncing ? "Synchronisation…" : "Synchroniser avec la banque et l'ERP"}
+              {syncing ? "Synchronisation…" : "Synchroniser avec le logiciel comptable"}
             </Button>
             {syncedAt && <span>Synchronisé à {syncedAt}</span>}
           </div>

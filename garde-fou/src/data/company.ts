@@ -35,11 +35,20 @@ export const DIRECTORY: Person[] = [
   },
 ];
 
+// Contacte le support informatique quand une adresse imite le domaine de l'entreprise.
+export const IT_SUPPORT: Person = {
+  name: "Support informatique",
+  role: "DSI",
+  email: "support@durand-industries.fr",
+  phone: "01 84 25 10 30",
+  aliases: [],
+};
+
 export const SUPPLIERS: Supplier[] = [
   {
     id: "dubois",
-    name: "Imprimerie Dubois",
-    domain: "imprimerie-dubois.fr",
+    name: "Lumio Data",
+    domain: "lumio-data.fr",
     iban: "FR3730004008210001234510933",
     phone: "01 84 60 12 45",
     country: "France",
@@ -48,15 +57,26 @@ export const SUPPLIERS: Supplier[] = [
     since: "2021",
   },
   {
-    id: "martin",
-    name: "Transports Martin",
-    domain: "transports-martin.fr",
+    id: "nuvio",
+    name: "Nuvio Cloud",
+    domain: "nuvio-cloud.fr",
     iban: "FR0310278060410002098765530",
     phone: "04 72 18 52 30",
     country: "France",
     usualAmount: { min: 15000, max: 20000 },
     paymentsToIban: 22,
     since: "2019",
+  },
+  {
+    id: "delivery",
+    name: "Delivery Partners",
+    domain: "delivery-partners.fr",
+    iban: "FR0930066109470001045678941",
+    phone: "01 84 70 22 15",
+    country: "France",
+    usualAmount: { min: 12000, max: 16000 },
+    paymentsToIban: 11,
+    since: "2023",
   },
   {
     id: "muller",

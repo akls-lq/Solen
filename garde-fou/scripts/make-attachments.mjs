@@ -16,13 +16,13 @@ const make = async (file, draw) => {
   await writeFile(new URL(`../public/attachments/${file}`, import.meta.url), await doc.save());
 };
 
-await make("Nouveau_RIB_Transports_Martin.pdf", ({ t, hr, page, bold }) => {
+await make("Nouveau_RIB_Nuvio_Cloud.pdf", ({ t, hr, page, bold }) => {
   t("BANQUE HORIZON", 50, 780, 16, bold, rgb(0.05, 0.2, 0.45));
   t("Agence Paris Opéra · 8 boulevard Haussmann · 75009 Paris", 50, 762, 9, undefined, grey);
   t("RELEVÉ D'IDENTITÉ BANCAIRE", 50, 715, 13, bold);
   hr(705);
   t("Titulaire du compte", 50, 680, 9, undefined, grey);
-  t("TRANSPORTS MARTIN", 50, 664, 11, bold);
+  t("NUVIO CLOUD", 50, 664, 11, bold);
   t("12 rue des Entrepreneurs, 69007 Lyon", 50, 650, 10);
   const cols = [["Code banque", "16958"], ["Code guichet", "00001"], ["N° de compte", "00471281482"], ["Clé RIB", "13"]];
   cols.forEach(([h, v], i) => {

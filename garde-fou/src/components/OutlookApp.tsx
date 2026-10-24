@@ -37,11 +37,30 @@ import {
 import { MAILBOX_OWNER } from "@/data/company";
 import { MAILS, type Mail } from "@/data/mails";
 import type { AnalysisResult } from "@/lib/analyze";
-import { GardeFouPane } from "./GardeFouPane";
+import { SolenPane } from "./SolenPane";
+import { applyReflex, BADGES, EMPTY_VIGILANCE, type BadgeId, type Reflex, type VigilanceState } from "./vigilance";
 import { analyze } from "./mailClient";
 import styles from "./outlook.module.css";
 
-const STORAGE_KEY = "gardefou-installe";
+const STORAGE_KEY = "solen-installe";
+// Touches 1 à 6 : ouvrent les mails dans l'ordre de la démo.
+const DEMO_ORDER = ["nuvio", "sosie", "pdg", "daf", "conseiller", "mfa"];
+const VIGILANCE_KEY = "solen-vigilance";
+
+const loadVigilance = (): VigilanceState => {
+  try {
+    const saved = localStorage.getItem(VIGILANCE_KEY);
+    return saved ? { ...EMPTY_VIGILANCE, ...JSON.parse(saved) } : EMPTY_VIGILANCE;
+  } catch {
+    return EMPTY_VIGILANCE;
+  }
+};
+
+const saveVigilance = (state: VigilanceState) => {
+  try {
+    localStorage.setItem(VIGILANCE_KEY, JSON.stringify(state));
+  } catch {}
+};
 
 const dateOf = (mail: Mail) => {
   const d = new Date();
@@ -78,13 +97,18 @@ export const OutlookApp = () => {
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [results, setResults] = useState<Record<string, AnalysisResult>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [vigilance, setVigilance] = useState<VigilanceState>(loadVigilance);
+  const [toast, setToast] = useState<BadgeId | null>(null);
 
   const mail = MAILS.find((m) => m.id === selectedId)!;
 
   // Interrupteur caché pour la démo « avant / après » : Alt+Maj+G. Le jury ne le voit pas.
   useEffect(() => {
+    // Raccourcis de démo, invisibles pour le jury. L'app n'a aucun champ de saisie, une seule touche suffit.
     const onKey = (e: KeyboardEvent) => {
-      if (e.altKey && e.shiftKey && e.code === "KeyG") {
+      if (e.ctrlKey || e.metaKey || e.altKey || (e.target as HTMLElement).closest?.("input, textarea")) return;
+      const key = e.key.toLowerCase();
+      if (key === "s") {
         setInstalled((v) => {
           try {
             localStorage.setItem(STORAGE_KEY, v ? "0" : "1");
@@ -93,6 +117,16 @@ export const OutlookApp = () => {
         });
         setPaneOpen(true);
         setDismissed(new Set());
+      }
+      if (key === "r") {
+        setVigilance(EMPTY_VIGILANCE);
+        saveVigilance(EMPTY_VIGILANCE);
+      }
+      if (key === "f") window.open("/fournisseurs", "_blank");
+      const demoMail = DEMO_ORDER[Number(key) - 1];
+      if (demoMail) {
+        setSelectedId(demoMail);
+        setRead((prev) => new Set(prev).add(demoMail));
       }
     };
     window.addEventListener("keydown", onKey);
@@ -110,6 +144,25 @@ export const OutlookApp = () => {
     };
   }, [installed, mail]);
 
+  const onReflex = (reflex: Reflex) => {
+    const r = results[mail.id];
+    if (!r) return;
+    const { state, unlocked } = applyReflex(vigilance, {
+      mailId: mail.id,
+      reflex,
+      alert: r.verdict !== "fiable",
+      amount: r.amount,
+      lookalike: Boolean(r.sender.lookalike),
+      impersonation: r.sender.kind === "impersonation",
+    });
+    setVigilance(state);
+    saveVigilance(state);
+    if (unlocked.length) {
+      setToast(unlocked[unlocked.length - 1]);
+      setTimeout(() => setToast(null), 3500);
+    }
+  };
+
   const select = (id: string) => {
     setSelectedId(id);
     setRead((prev) => new Set(prev).add(id));
@@ -125,7 +178,8 @@ export const OutlookApp = () => {
 
   const unreadCount = MAILS.filter((m) => m.unread && !read.has(m.id)).length;
   const result = results[mail.id];
-  const showInfobar = installed && result && !dismissed.has(mail.id);
+  // Un module ne peut afficher sa notification que s'il tourne, c'est-à-dire volet épinglé et ouvert.
+  const showInfobar = installed && paneOpen && result && !dismissed.has(mail.id);
 
   return (
     <FluentProvider theme={webLightTheme} className={styles.root}>
@@ -199,7 +253,7 @@ export const OutlookApp = () => {
                   icon={<Shield20Filled className={styles.brandIcon} />}
                   onClick={() => setPaneOpen(true)}
                 >
-                  Garde-Fou
+                  Solen
                 </Button>
               </>
             )}
@@ -299,7 +353,8 @@ export const OutlookApp = () => {
                   </div>
                 </div>
 
-                {/* Notification de module : une ligne de 150 caractères au plus, style imposé par Outlook. */}
+                {/* Notification de module (ErrorMessage / InformationalMessage) : 150 caractères au plus,
+                    style imposé par Outlook, et seule l'action « Ignorer » est permise en lecture. */}
                 {showInfobar && (
                   <div
                     className={`${styles.infobar} ${result.verdict === "fiable" ? styles.infobarInfo : styles.infobarError}`}
@@ -307,11 +362,6 @@ export const OutlookApp = () => {
                   >
                     {result.verdict === "fiable" ? <Info20Regular /> : <ErrorCircle20Filled />}
                     <span className={styles.infobarText}>{result.infobar}</span>
-                    {result.verdict !== "fiable" && (
-                      <Button size="small" onClick={() => setPaneOpen(true)}>
-                        Voir l&apos;analyse
-                      </Button>
-                    )}
                     <Button size="small" onClick={() => setDismissed((prev) => new Set(prev).add(mail.id))}>
                       Ignorer
                     </Button>
@@ -337,7 +387,16 @@ export const OutlookApp = () => {
             </article>
 
             {installed && paneOpen && (
-              <GardeFouPane key={mail.id} mail={mail} result={result} error={errors[mail.id]} onClose={() => setPaneOpen(false)} />
+              <SolenPane
+                key={mail.id}
+                mail={mail}
+                result={result}
+                error={errors[mail.id]}
+                onClose={() => setPaneOpen(false)}
+                vigilance={vigilance}
+                onReflex={onReflex}
+                notice={toast ? BADGES.find((b) => b.id === toast)?.label : undefined}
+              />
             )}
           </div>
         </div>
