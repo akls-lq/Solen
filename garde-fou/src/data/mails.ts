@@ -68,24 +68,22 @@ export const MAILS: Mail[] = [
     internetHeaders: authHeaders("arkos-systems.fr"),
   },
   {
-    // Fausse facture de conseil depuis un domaine sosie : « de1ivery » avec un 1 à la place du l.
-    id: "sosie",
-    internetMessageId: "<20261023100512.4b2e@de1ivery-partners.fr>",
-    subject: "Facture DP-2026-118 – mission d'octobre",
-    from: { displayName: "Delivery Partners – Facturation", emailAddress: "facturation@de1ivery-partners.fr" },
+    // Hameçonnage : faux support informatique qui vole les identifiants, depuis « arkos-systerns.fr » (rn à la place du m).
+    id: "mfa",
+    internetMessageId: "<20261022113020.77fe@arkos-systerns.fr>",
+    subject: "Action requise : votre double authentification expire aujourd'hui",
+    from: { displayName: "Support informatique", emailAddress: "support@arkos-systerns.fr" },
     to: "Claire Bernard",
     received: { dayOffset: 0, time: "10:05" },
     unread: true,
     body: [
-      "Bonjour Madame Bernard,",
-      "Veuillez trouver ci-dessous notre facture DP-2026-118 pour la mission d'accompagnement de vos équipes en octobre, d'un montant de 14 400,00 €.",
-      "Notre cabinet ayant changé de banque ce mois-ci, merci d'effectuer le règlement sur notre nouveau compte :\nIBAN : FR24 1450 8000 0100 9876 5432 110\nBIC : HRZNFRP1",
-      "Le règlement est attendu sous 48 h, conformément à nos conditions.",
-      "Cordialement,\nService facturation, Delivery Partners",
+      "Bonjour Claire,",
+      "Dans le cadre de la mise à jour de sécurité, votre double authentification expire aujourd'hui. Pour conserver votre accès à la messagerie et au VPN, renouvelez-la avant 18 h :\nhttps://arkos-systerns.fr/securite/renouvellement",
+      "Sans action de votre part, votre compte sera suspendu.",
+      "Le support informatique",
     ].join("\n\n"),
     attachments: [],
-    // Le fraudeur possède ce domaine : l'authentification passe, c'est le nom qui trompe.
-    internetHeaders: authHeaders("de1ivery-partners.fr"),
+    internetHeaders: authHeaders("arkos-systerns.fr"),
   },
   {
     id: "muller",
@@ -128,22 +126,6 @@ export const MAILS: Mail[] = [
     internetHeaders: authHeaders("gmail.com"),
   },
   {
-    id: "dubois",
-    internetMessageId: "<20261022161044.9e01@lumio-data.fr>",
-    subject: "Relance : facture F-2026-219",
-    from: { displayName: "Lumio Data", emailAddress: "comptabilite@lumio-data.fr" },
-    to: "Claire Bernard",
-    received: { dayOffset: -1, time: "16:10" },
-    body: [
-      "Bonjour,",
-      "Sauf erreur de notre part, la facture F-2026-219 de 2 350,00 € arrivée à échéance le 15 octobre reste impayée. Elle est disponible sur votre plateforme de facturation.",
-      "Merci de procéder au règlement sur le compte habituel.",
-      "Cordialement,\nService comptabilité, Lumio Data",
-    ].join("\n\n"),
-    attachments: [],
-    internetHeaders: authHeaders("lumio-data.fr"),
-  },
-  {
     // Faux conseiller bancaire : banque fictive, domaine qui n'appartient pas à la banque.
     id: "conseiller",
     internetMessageId: "<20261022174512.a1c9@banquehorizon-alerte.com>",
@@ -161,21 +143,39 @@ export const MAILS: Mail[] = [
     internetHeaders: authHeaders("banquehorizon-alerte.com"),
   },
   {
-    // Hameçonnage : faux support informatique qui vole les identifiants, depuis un domaine qui imite celui de l'entreprise.
-    id: "mfa",
-    internetMessageId: "<20261022113020.77fe@arkos-systems-it.fr>",
-    subject: "Action requise : votre double authentification expire aujourd'hui",
-    from: { displayName: "Support informatique", emailAddress: "support@arkos-systems-it.fr" },
+    id: "dubois",
+    internetMessageId: "<20261022161044.9e01@lumio-data.fr>",
+    subject: "Relance : facture F-2026-219",
+    from: { displayName: "Lumio Data", emailAddress: "comptabilite@lumio-data.fr" },
+    to: "Claire Bernard",
+    received: { dayOffset: -1, time: "16:10" },
+    body: [
+      "Bonjour,",
+      "Sauf erreur de notre part, la facture F-2026-219 de 2 350,00 € arrivée à échéance le 15 octobre reste impayée. Elle est disponible sur votre plateforme de facturation.",
+      "Merci de procéder au règlement sur le compte habituel.",
+      "Cordialement,\nService comptabilité, Lumio Data",
+    ].join("\n\n"),
+    attachments: [],
+    internetHeaders: authHeaders("lumio-data.fr"),
+  },
+  {
+    // Fausse facture de conseil depuis un domaine sosie : « de1ivery » avec un 1 à la place du l.
+    id: "sosie",
+    internetMessageId: "<20261023100512.4b2e@de1ivery-partners.fr>",
+    subject: "Facture DP-2026-118 – mission d'octobre",
+    from: { displayName: "Delivery Partners – Facturation", emailAddress: "facturation@de1ivery-partners.fr" },
     to: "Claire Bernard",
     received: { dayOffset: -1, time: "11:30" },
     body: [
-      "Bonjour Claire,",
-      "Dans le cadre de la mise à jour de sécurité, votre double authentification expire aujourd'hui. Pour conserver votre accès à la messagerie et au VPN, renouvelez-la avant 18 h :\nhttps://arkos-systems-it.fr/securite/renouvellement",
-      "Sans action de votre part, votre compte sera suspendu.",
-      "Le support informatique",
+      "Bonjour Madame Bernard,",
+      "Veuillez trouver ci-dessous notre facture DP-2026-118 pour la mission d'accompagnement de vos équipes en octobre, d'un montant de 14 400,00 €.",
+      "Notre cabinet ayant changé de banque ce mois-ci, merci d'effectuer le règlement sur notre nouveau compte :\nIBAN : FR24 1450 8000 0100 9876 5432 110\nBIC : HRZNFRP1",
+      "Le règlement est attendu sous 48 h, conformément à nos conditions.",
+      "Cordialement,\nService facturation, Delivery Partners",
     ].join("\n\n"),
     attachments: [],
-    internetHeaders: authHeaders("arkos-systems-it.fr"),
+    // Le fraudeur possède ce domaine : l'authentification passe, c'est le nom qui trompe.
+    internetHeaders: authHeaders("de1ivery-partners.fr"),
   },
   {
     id: "news",

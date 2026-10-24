@@ -44,7 +44,7 @@ import styles from "./outlook.module.css";
 
 const STORAGE_KEY = "solen-installe";
 // Touches 1 à 6 : ouvrent les mails dans l'ordre de la démo.
-const DEMO_ORDER = ["nuvio", "sosie", "pdg", "daf", "conseiller", "mfa"];
+const DEMO_ORDER = ["nuvio", "mfa", "pdg", "daf", "conseiller", "sosie"];
 const VIGILANCE_KEY = "solen-vigilance";
 
 const loadVigilance = (): VigilanceState => {
@@ -123,6 +123,8 @@ export const OutlookApp = () => {
         saveVigilance(EMPTY_VIGILANCE);
       }
       if (key === "f") window.open("/fournisseurs", "_blank");
+      // P : épingle ou désépingle le volet. Désépinglé, Solen n'analyse plus rien (utile avant la démo).
+      if (key === "p") setPaneOpen((v) => !v);
       const demoMail = DEMO_ORDER[Number(key) - 1];
       if (demoMail) {
         setSelectedId(demoMail);
@@ -134,7 +136,8 @@ export const OutlookApp = () => {
   }, []);
 
   useEffect(() => {
-    if (!installed) return;
+    // Comme dans Outlook, le module ne tourne que si son volet est ouvert (épinglé) : volet fermé, aucun appel à l'IA.
+    if (!installed || !paneOpen) return;
     let cancelled = false;
     analyze(mail)
       .then((r) => !cancelled && setResults((prev) => ({ ...prev, [mail.id]: r })))
@@ -142,7 +145,7 @@ export const OutlookApp = () => {
     return () => {
       cancelled = true;
     };
-  }, [installed, mail]);
+  }, [installed, paneOpen, mail]);
 
   const onReflex = (reflex: Reflex) => {
     const r = results[mail.id];
