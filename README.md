@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://solen-demo.vercel.app/">
+<a href="https://solen-pi.vercel.app/">
   <img src="./solen-hero.gif" alt="SOLEN — bannière animée" width="100%" />
 </a>
 
@@ -12,7 +12,7 @@
 
 <br />
 
-[![VOIR LA DÉMO](https://img.shields.io/badge/▶%20VOIR%20LA%20DÉMO-FFD23F?style=for-the-badge&labelColor=0B1020)](https://solen-demo.vercel.app/)
+[![VOIR LA DÉMO](https://img.shields.io/badge/▶%20VOIR%20LA%20DÉMO-FFD23F?style=for-the-badge&labelColor=0B1020)](https://solen-pi.vercel.app/)
 [![EXPLORER LE CODE](https://img.shields.io/badge/⌁%20EXPLORER%20LE%20CODE-26314C?style=for-the-badge&labelColor=0B1020&color=26314C)](./garde-fou)
 
 ![Hackathon](https://img.shields.io/badge/FINAXYS%20×%20MISTRAL%20AI-HACKATHON%202026-FFD23F?style=flat-square&labelColor=0B1020)
@@ -22,7 +22,7 @@
 
 **Build What's Next · Hackathon FINAXYS × Mistral AI · 23–24 octobre 2026 · Paris**
 
-[Démo en ligne](https://solen-demo.vercel.app/) · [Profils fournisseurs](https://solen-demo.vercel.app/fournisseurs) · [Équipe](#léquipe) · [Dépôt original](https://github.com/sephorah/hack-the-bank)
+[Démo en ligne](https://solen-pi.vercel.app/) · [Profils fournisseurs](https://solen-pi.vercel.app/fournisseurs) · [Équipe](#léquipe) · [Dépôt original](https://github.com/sephorah/hack-the-bank)
 
 </div>
 
@@ -58,7 +58,7 @@ Un dirigeant demande un virement urgent. Un fournisseur transmet un **nouvel IBA
 
 <div align="center">
 
-### [↗ Lancer la démonstration interactive](https://solen-demo.vercel.app/)
+### [↗ Lancer la démonstration interactive](https://solen-pi.vercel.app/)
 
 *Une boîte de réception fictive inspirée d'Outlook, un panneau de vigilance SOLEN et un parcours guidé.*
 
@@ -72,7 +72,7 @@ Un dirigeant demande un virement urgent. Un fournisseur transmet un **nouvel IBA
 | **Fournisseur allemand** | Changement de coordonnées bancaires signalé dans une facture PDF lisible. |
 | **Faux support informatique** | Domaine sosie et lien d'hameçonnage. |
 
-**[Voir les profils fournisseurs de la démo ↗](https://solen-demo.vercel.app/fournisseurs)** — références d'IBAN masquées, domaines, numéros de confiance et fourchettes de paiement, avec des **données entièrement fictives**.
+**[Voir les profils fournisseurs de la démo ↗](https://solen-pi.vercel.app/fournisseurs)** — références d'IBAN masquées, domaines, numéros de confiance et fourchettes de paiement, avec des **données entièrement fictives**.
 
 ## Sous le capot
 
@@ -209,7 +209,7 @@ Nous avons conçu, développé, testé et présenté **SOLEN collectivement** lo
 
 **SOLEN · Détecter. Comprendre. Vérifier.**
 
-[**↗ Voir la démo**](https://solen-demo.vercel.app/) · [**↗ Code d'origine**](https://github.com/sephorah/hack-the-bank)
+[**↗ Voir la démo**](https://solen-pi.vercel.app/) · [**↗ Code d'origine**](https://github.com/sephorah/hack-the-bank)
 
 <sub>Conçu en équipe · Hackathon FINAXYS × Mistral AI · Octobre 2026</sub>
 
